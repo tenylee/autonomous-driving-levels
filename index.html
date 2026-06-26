@@ -183,25 +183,142 @@
   }
   .summary-table tr:last-child td { border-bottom: none; }
 
-  /* Warning */
-  .warning-box {
-    background: var(--danger);
+  /* L3 Warning Section */
+  .l3-warning {
+    background: #fef2f2;
+    border: 2px solid #dc2626;
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 0;
     margin-bottom: 16px;
-    border-left: 4px solid #dc2626;
+    overflow: hidden;
   }
-  .warning-box .w-title {
+  @media (prefers-color-scheme: dark) {
+    .l3-warning {
+      background: #450a0a;
+      border-color: #f87171;
+    }
+  }
+  .l3-warning-header {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .l3-warning-header .icon {
+    font-size: 24px;
+    animation: pulse-icon 2s ease-in-out infinite;
+  }
+  @keyframes pulse-icon {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+  .l3-warning-header .title {
     font-size: 15px;
+    font-weight: 700;
+  }
+  .l3-warning-header .sub {
+    font-size: 12px;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+  .l3-warning-body {
+    padding: 16px 20px;
+  }
+  .l3-warn-item {
+    background: #fff;
+    border-left: 4px solid #dc2626;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+  }
+  .l3-warn-item:last-child { margin-bottom: 0; }
+  @media (prefers-color-scheme: dark) {
+    .l3-warn-item {
+      background: #1c1917;
+    }
+  }
+  .l3-warn-item .item-title {
+    font-size: 14px;
     font-weight: 700;
     color: #991b1b;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .warning-box p {
+  @media (prefers-color-scheme: dark) {
+    .l3-warn-item .item-title {
+      color: #fca5a5;
+    }
+  }
+  .l3-warn-item .item-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #dc2626;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .l3-warn-item p {
     font-size: 13px;
     color: #7f1d1d;
     margin: 4px 0;
-    line-height: 1.5;
+    line-height: 1.6;
+    padding-left: 32px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .l3-warn-item p {
+      color: #fecaca;
+    }
+  }
+  .l3-warn-item .highlight {
+    background: #fef08a;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    color: #854d0e;
+  }
+  @media (prefers-color-scheme: dark) {
+    .l3-warn-item .highlight {
+      background: #78716c;
+      color: #e7e5e4;
+    }
+  }
+  .key-takeaway {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 2px solid #f59e0b;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    text-align: center;
+  }
+  @media (prefers-color-scheme: dark) {
+    .key-takeaway {
+      background: linear-gradient(135deg, #78350f, #451a03);
+      border-color: #d97706;
+    }
+  }
+  .key-takeaway .kt-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 4px;
+  }
+  .key-takeaway .kt-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #78350f;
+  }
+  @media (prefers-color-scheme: dark) {
+    .key-takeaway .kt-label { color: #fbbf24; }
+    .key-takeaway .kt-text { color: #fef3c7; }
   }
 
   /* Source */
@@ -354,15 +471,37 @@
     </tbody>
   </table>
 
-  <!-- Warning -->
-  <div class="warning-box">
-    <div class="w-title">⚠️ 常见误区提醒</div>
-    <p><b>1. 带 NCA 自动领航 ≠ L3</b></p>
-    <p>小鹏、特斯拉、理想、比亚迪等所有品牌的城区 / 高速 NCA，目前都是 <b>L2 级</b>，只是辅助驾驶，手不能长时间离开，出事司机负责。只有拿到国家 L3 准入资质、搭载冗余硬件的车型，才能合法 L3 脱手行驶。</p>
-    <p><b>2. L3 ≠ 全路段自动驾驶</b></p>
-    <p>不能在城市普通红绿灯道路、小区、乡间小路用。仅限高速、城市封闭快速路，路况复杂路段系统会自动退出 L3。</p>
-    <p><b>3. L3 核心门槛是资质 + 硬件冗余</b></p>
-    <p>需要国家准入资质和传感器 / 计算平台双冗余，目前仅尊界 S800 等极少数车型拿到合规 L3。</p>
+  <!-- L3 Misconceptions - IMPORTANT -->
+  <div class="l3-warning">
+    <div class="l3-warning-header">
+      <span class="icon">🚨</span>
+      <div>
+        <div class="title">L3 三大误区 · 务必注意</div>
+        <div class="sub">这是最容易搞混的地方，请仔细阅读</div>
+      </div>
+    </div>
+    <div class="l3-warning-body">
+      <div class="l3-warn-item">
+        <div class="item-title"><span class="item-num">1</span>带 NCA 自动领航 ≠ L3</div>
+        <p>小鹏、特斯拉、理想、比亚迪等所有品牌的城区 / 高速 NCA，目前都是 <span class="highlight">L2 级</span>，只是辅助驾驶。</p>
+        <p>⚠️ 手不能长时间离开方向盘，<b>出事司机负责</b>。</p>
+        <p>只有拿到 <span class="highlight">国家 L3 准入资质</span>、搭载冗余硬件的车型，才能合法 L3 脱手行驶。</p>
+      </div>
+      <div class="l3-warn-item">
+        <div class="item-title"><span class="item-num">2</span>L3 ≠ 全路段自动驾驶</div>
+        <p>❌ 不能在 <b>城市普通红绿灯道路、小区、乡间小路</b> 使用。</p>
+        <p>✅ 仅限 <span class="highlight">高速、城市封闭快速路</span>，路况复杂路段系统会自动退出 L3 降级为 L2，需要人接管。</p>
+      </div>
+      <div class="l3-warn-item">
+        <div class="item-title"><span class="item-num">3</span>L3 核心门槛：资质 + 硬件冗余</div>
+        <p>需要 <span class="highlight">国家准入资质</span> + 传感器 / 计算平台 <span class="highlight">双冗余备份</span>。</p>
+        <p>目前仅 <b>尊界 S800</b> 等极少数车型拿到合规 L3 量产资质。</p>
+      </div>
+      <div class="key-takeaway">
+        <div class="kt-label">💡 一句话总结</div>
+        <div class="kt-text">市面上 99% 的「智驾」「领航」都是 L2，手不能离方向盘，出事自己负责</div>
+      </div>
+    </div>
   </div>
 
   <div class="source">数据来源：GB/T 40429-2021《汽车驾驶自动化分级》中国国家标准</div>
