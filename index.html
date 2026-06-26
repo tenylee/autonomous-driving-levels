@@ -1,0 +1,366 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>智能驾驶分级 L1-L3</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f8fafc;
+    --fg: #172033;
+    --muted: #5b6475;
+    --line: #64748b;
+    --l1: #fef3c7;
+    --l2: #fdba74;
+    --l3: #86efac;
+    --danger: #fecaca;
+    --safe: #bbf7d0;
+    --warn: #fed7aa;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --fg: #e5e7eb;
+      --muted: #94a3b8;
+      --line: #475569;
+      --l1: #92400e;
+      --l2: #c2410c;
+      --l3: #166534;
+      --danger: #7f1d1d;
+      --safe: #14532d;
+      --warn: #78350f;
+      --card-bg: #1e293b;
+      --border: #334155;
+    }
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 14px/1.4 ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+  .title-block {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .title-block h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--fg);
+  }
+  .title-block .sub {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  /* Rule box */
+  .rule-box {
+    background: var(--card-bg);
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .rule-box .rule-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--fg);
+  }
+  .rule-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .rule-item {
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .rule-l2 {
+    background: var(--warn);
+    color: #92400e;
+  }
+  .rule-l3 {
+    background: var(--safe);
+    color: #166534;
+  }
+
+  /* Comparison cards */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (min-width: 640px) {
+    .cards { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+  }
+  .card-header {
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .card-header.l1-h { background: #d97706; }
+  .card-header.l2-h { background: #ea580c; }
+  .card-header.l3-h { background: #16a34a; }
+  .card-body {
+    padding: 14px 16px;
+  }
+  .card-body .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .card-body .row:last-child { border-bottom: none; }
+  .card-body .row .lbl {
+    font-weight: 600;
+    color: var(--muted);
+    flex-shrink: 0;
+    width: 72px;
+  }
+  .card-body .row .val {
+    text-align: right;
+    flex: 1;
+    padding-left: 8px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-danger { background: var(--danger); color: #991b1b; }
+  .badge-warn { background: var(--warn); color: #78350f; }
+  .badge-safe { background: var(--safe); color: #14532d; }
+
+  /* Table for mobile-friendly summary */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 13px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .summary-table th {
+    background: var(--line);
+    color: #fff;
+    padding: 10px 8px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 12px;
+  }
+  .summary-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    vertical-align: middle;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+
+  /* Warning */
+  .warning-box {
+    background: var(--danger);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border-left: 4px solid #dc2626;
+  }
+  .warning-box .w-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #991b1b;
+    margin-bottom: 6px;
+  }
+  .warning-box p {
+    font-size: 13px;
+    color: #7f1d1d;
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+
+  /* Source */
+  .source {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+</style>
+<main>
+  <!-- Title -->
+  <div class="title-block">
+    <h1>🚗 智能驾驶分级速查</h1>
+    <div class="sub">依据 GB/T 40429-2021 中国国家标准 | L1 ~ L3</div>
+  </div>
+
+  <!-- One-sentence rule -->
+  <div class="rule-box">
+    <div class="rule-title">🔑 一句话记住核心区别</div>
+    <div class="rule-row">
+      <span class="rule-item rule-l2">⚠️ L2 及以下：人开车，出事人负责</span>
+      <span class="rule-item rule-l3">✅ L3 限定场景：车开车，出事车企负责</span>
+    </div>
+  </div>
+
+  <!-- Three cards side by side -->
+  <div class="cards">
+    <!-- L1 -->
+    <div class="card">
+      <div class="card-header l1-h">L1 辅助驾驶</div>
+      <div class="card-body">
+        <div class="row">
+          <span class="lbl">谁开车</span>
+          <span class="val"><span class="badge badge-danger">驾驶员</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">能否脱手</span>
+          <span class="val">❌ 绝对不能</span>
+        </div>
+        <div class="row">
+          <span class="lbl">事故责任</span>
+          <span class="val"><span class="badge badge-danger">驾驶员全责</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">核心能力</span>
+          <span class="val">车速控制 <b>或</b> 方向控制<br/>二选一</span>
+        </div>
+        <div class="row">
+          <span class="lbl">常见功能</span>
+          <span class="val">定速巡航、ACC<br/>车道偏离预警</span>
+        </div>
+      </div>
+    </div>
+    <!-- L2 -->
+    <div class="card">
+      <div class="card-header l2-h">L2 组合驾驶辅助</div>
+      <div class="card-body">
+        <div class="row">
+          <span class="lbl">谁开车</span>
+          <span class="val"><span class="badge badge-danger">驾驶员</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">能否脱手</span>
+          <span class="val">⚠️ 短暂脱手即报警<br/>必须时刻监控</span>
+        </div>
+        <div class="row">
+          <span class="lbl">事故责任</span>
+          <span class="val"><span class="badge badge-danger">驾驶员全责</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">核心能力</span>
+          <span class="val">横向 + 纵向<br/>同时控制</span>
+        </div>
+        <div class="row">
+          <span class="lbl">常见功能</span>
+          <span class="val">ACC 全速域跟车 +<br/>车道居中 LCC、NCA</span>
+        </div>
+      </div>
+    </div>
+    <!-- L3 -->
+    <div class="card">
+      <div class="card-header l3-h">L3 有条件自动驾驶</div>
+      <div class="card-body">
+        <div class="row">
+          <span class="lbl">谁开车</span>
+          <span class="val"><span class="badge badge-safe">限定场景车辆</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">能否脱手</span>
+          <span class="val">✅ 可长时间脱手<br/>系统提醒才接管</span>
+        </div>
+        <div class="row">
+          <span class="lbl">事故责任</span>
+          <span class="val"><span class="badge badge-safe">场景内车企担责</span></span>
+        </div>
+        <div class="row">
+          <span class="lbl">核心能力</span>
+          <span class="val">系统全权接管<br/>感知 + 决策 + 执行</span>
+        </div>
+        <div class="row">
+          <span class="lbl">使用限制</span>
+          <span class="val">仅限高速 / 封闭<br/>快速路，需资质</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary table -->
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th>L1 辅助驾驶</th>
+        <th>L2 组合辅助</th>
+        <th>L3 有条件自动驾驶</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>谁开车</b></td>
+        <td>驾驶员</td>
+        <td>驾驶员</td>
+        <td>限定场景下车辆</td>
+      </tr>
+      <tr>
+        <td><b>能否脱手</b></td>
+        <td>❌ 绝对不能</td>
+        <td>⚠️ 短暂即报警</td>
+        <td>✅ 可长时间脱手</td>
+      </tr>
+      <tr>
+        <td><b>事故责任</b></td>
+        <td>驾驶员全责</td>
+        <td>驾驶员全责</td>
+        <td>场景内车企担责</td>
+      </tr>
+      <tr>
+        <td><b>核心能力</b></td>
+        <td>车速 / 方向二选一</td>
+        <td>横向+纵向双控制</td>
+        <td>系统全权接管</td>
+      </tr>
+      <tr>
+        <td><b>代表场景</b></td>
+        <td>定速巡航</td>
+        <td>高速 NCA / 城区 NCA</td>
+        <td>高速 / 快速路自动驾驶</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Warning -->
+  <div class="warning-box">
+    <div class="w-title">⚠️ 常见误区提醒</div>
+    <p><b>1. 带 NCA 自动领航 ≠ L3</b> — 特斯拉 FSD、华为 ADS、小鹏 XNGP 等目前全部是 <b>L2+</b>，法律上司机全责</p>
+    <p><b>2. L3 ≠ 全路段自动驾驶</b> — 仅限高速 / 城市封闭快速路，复杂路况系统自动退出</p>
+    <p><b>3. L3 核心门槛是资质 + 硬件冗余</b> — 需要国家准入资质和传感器 / 计算平台双冗余</p>
+  </div>
+
+  <div class="source">数据来源：GB/T 40429-2021《汽车驾驶自动化分级》中国国家标准</div>
+</main>
