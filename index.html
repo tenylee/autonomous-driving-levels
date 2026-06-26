@@ -3,413 +3,293 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>智能驾驶分级 L1-L3</title>
 <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    color-scheme: light dark;
-    --bg: #f8fafc;
-    --fg: #172033;
-    --muted: #5b6475;
-    --line: #64748b;
+    --bg: #f1f5f9;
+    --fg: #0f172a;
+    --muted: #64748b;
     --card-bg: #ffffff;
     --border: #e2e8f0;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #0f172a;
-      --fg: #e5e7eb;
+      --fg: #f1f5f9;
       --muted: #94a3b8;
-      --line: #475569;
       --card-bg: #1e293b;
       --border: #334155;
     }
   }
   body {
-    margin: 0;
     background: var(--bg);
     color: var(--fg);
-    font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font: 16px/1.5 -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
   }
   main {
-    max-width: 900px;
+    max-width: 720px;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 16px 12px;
   }
-  .title-block {
-    text-align: center;
-    margin-bottom: 24px;
+
+  /* Title */
+  .title { text-align: center; margin-bottom: 12px; }
+  .title h1 { font-size: 22px; font-weight: 800; }
+  .title .sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* Rule banner */
+  .rule {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 14px;
   }
-  .title-block h1 {
-    font-size: 26px;
-    font-weight: 800;
-    margin: 0 0 6px;
-    color: var(--fg);
+  .rule span {
+    font-size: 14px; font-weight: 700;
+    padding: 6px 12px; border-radius: 8px;
   }
-  .title-block .sub {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .rule-box {
-    background: var(--card-bg);
-    border: 2px solid var(--line);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-  .rule-box .rule-title {
-    font-size: 17px;
-    font-weight: 800;
-    margin-bottom: 12px;
-    color: var(--fg);
-  }
-  .rule-row {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .rule-item {
-    font-size: 15px;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .rule-l2 {
-    background: #fed7aa;
-    color: #92400e;
-  }
-  .rule-l3 {
-    background: #bbf7d0;
-    color: #166534;
-  }
+  .rule .r2 { background: #fed7aa; color: #92400e; }
+  .rule .r3 { background: #bbf7d0; color: #166534; }
+
+  /* Compact cards */
   .cards {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 10px;
+    margin-bottom: 14px;
   }
   @media (min-width: 640px) {
-    .cards { grid-template-columns: 1fr 1fr 1fr; }
+    .cards { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   }
   .card {
-    border-radius: 12px;
+    background: var(--card-bg);
+    border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--border);
-    background: var(--card-bg);
   }
-  .card-header {
-    padding: 14px 16px;
+  .card-h {
     text-align: center;
-    font-size: 22px;
+    padding: 8px 10px;
+    font-size: 17px;
     font-weight: 800;
     color: #fff;
-    letter-spacing: 0.5px;
   }
-  .card-header.l1-h { background: #d97706; }
-  .card-header.l2-h { background: #ea580c; }
-  .card-header.l3-h { background: #16a34a; }
-  .card-body {
-    padding: 14px 16px;
-  }
-  .card-body .row {
+  .card-h.h1 { background: #d97706; }
+  .card-h.h2 { background: #ea580c; }
+  .card-h.h3 { background: #16a34a; }
+  .card-b { padding: 8px 10px; }
+  .card-b .r {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
+    padding: 5px 0;
     border-bottom: 1px solid var(--border);
-    font-size: 15px;
+    font-size: 13px;
   }
-  .card-body .row:last-child { border-bottom: none; }
-  .card-body .row .lbl {
+  .card-b .r:last-child { border: none; }
+  .card-b .r .k {
     font-weight: 800;
-    color: var(--fg);
     flex-shrink: 0;
-    width: 72px;
-    font-size: 15px;
+    width: 64px;
   }
-  .card-body .row .val {
+  .card-b .r .v {
     text-align: right;
     flex: 1;
-    padding-left: 8px;
+    padding-left: 6px;
     font-weight: 600;
   }
   .badge {
     display: inline-block;
-    padding: 3px 10px;
+    padding: 2px 7px;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
   }
-  .badge-danger { background: #fecaca; color: #991b1b; }
-  .badge-warn { background: #fed7aa; color: #78350f; }
-  .badge-safe { background: #bbf7d0; color: #14532d; }
-  .summary-table {
+  .b-r { background: #fecaca; color: #991b1b; }
+  .b-g { background: #bbf7d0; color: #14532d; }
+
+  /* Table */
+  .tbl {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 24px;
-    font-size: 15px;
+    font-size: 13px;
     background: var(--card-bg);
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--border);
+    margin-bottom: 14px;
   }
-  .summary-table th {
-    background: var(--line);
-    color: #fff;
-    padding: 12px 10px;
-    font-weight: 800;
-    text-align: center;
-    font-size: 14px;
-  }
-  .summary-table td {
-    padding: 12px 10px;
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    vertical-align: middle;
-    font-weight: 600;
-  }
-  .summary-table tr:last-child td { border-bottom: none; }
+  .tbl th { background: #64748b; color: #fff; padding: 8px 6px; font-weight: 800; font-size: 12px; text-align: center; }
+  .tbl td { padding: 8px 6px; border-bottom: 1px solid var(--border); text-align: center; font-weight: 600; }
+  .tbl tr:last-child td { border: none; }
 
-  /* L3 Warning Section - FIXED FOR DARK MODE */
-  .l3-warning {
-    background: #fff5f5;
+  /* Warning section */
+  .warn {
     border: 2px solid #dc2626;
     border-radius: 12px;
-    padding: 0;
-    margin-bottom: 16px;
     overflow: hidden;
-  }
-  @media (prefers-color-scheme: dark) {
-    .l3-warning {
-      background: #1a0505;
-      border-color: #ef4444;
-    }
-  }
-  .l3-warning-header {
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
-    color: #fff;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .l3-warning-header .icon {
-    font-size: 24px;
-    animation: pulse-icon 2s ease-in-out infinite;
-  }
-  @keyframes pulse-icon {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-  }
-  .l3-warning-header .title {
-    font-size: 18px;
-    font-weight: 800;
-  }
-  .l3-warning-header .sub {
-    font-size: 14px;
-    opacity: 0.9;
-    font-weight: 500;
-  }
-  .l3-warning-body {
-    padding: 16px 20px;
-  }
-  .l3-warn-item {
-    background: #fff;
-    border-left: 4px solid #dc2626;
-    border-radius: 0 8px 8px 0;
-    padding: 14px 16px;
     margin-bottom: 12px;
   }
-  .l3-warn-item:last-child { margin-bottom: 0; }
-  @media (prefers-color-scheme: dark) {
-    .l3-warn-item {
-      background: #292524;
-      border-left-color: #ef4444;
-    }
-  }
-  .l3-warn-item .item-title {
-    font-size: 17px;
-    font-weight: 800;
-    color: #dc2626;
-    margin-bottom: 8px;
+  .warn-h {
+    background: #dc2626;
+    color: #fff;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  @media (prefers-color-scheme: dark) {
-    .l3-warn-item .item-title {
-      color: #fca5a5;
-    }
+  .warn-h .icon { font-size: 20px; }
+  .warn-h .t { font-size: 16px; font-weight: 800; }
+  .warn-h .s { font-size: 12px; opacity: 0.9; }
+  .warn-b { padding: 10px 14px; }
+  .wi {
+    background: var(--card-bg);
+    border-left: 4px solid #dc2626;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 12px;
+    margin-bottom: 8px;
   }
-  .l3-warn-item .item-num {
+  .wi:last-child { margin-bottom: 0; }
+  .wi .wt {
+    font-size: 15px;
+    font-weight: 800;
+    color: #dc2626;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wi .n {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 24px; height: 24px;
     border-radius: 50%;
     background: #dc2626;
     color: #fff;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 800;
     flex-shrink: 0;
   }
-  .l3-warn-item p {
-    font-size: 15px;
+  .wi p {
+    font-size: 14px;
     font-weight: 500;
-    color: #7f1d1d;
-    margin: 5px 0;
-    line-height: 1.7;
-    padding-left: 36px;
+    color: #991b1b;
+    margin: 3px 0;
+    line-height: 1.6;
+    padding-left: 30px;
   }
   @media (prefers-color-scheme: dark) {
-    .l3-warn-item p {
-      color: #fecaca;
-      font-weight: 500;
-    }
+    .wi { background: #292524; }
+    .wi p { color: #fecaca; }
+    .wi .wt { color: #fca5a5; }
   }
-  .l3-warn-item .highlight {
+  .hi {
     background: #fef08a;
-    padding: 2px 8px;
+    padding: 1px 6px;
     border-radius: 3px;
     font-weight: 800;
     color: #713f12;
   }
   @media (prefers-color-scheme: dark) {
-    .l3-warn-item .highlight {
-      background: #a16207;
-      color: #fefce8;
-    }
+    .hi { background: #a16207; color: #fefce8; }
   }
-  .key-takeaway {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
+  .kt {
+    background: #fef3c7;
     border: 2px solid #f59e0b;
     border-radius: 8px;
-    padding: 14px 16px;
-    margin-top: 14px;
+    padding: 10px 14px;
+    margin-top: 10px;
     text-align: center;
   }
   @media (prefers-color-scheme: dark) {
-    .key-takeaway {
-      background: linear-gradient(135deg, #78350f, #451a03);
-      border-color: #d97706;
-    }
+    .kt { background: #451a03; border-color: #d97706; }
   }
-  .key-takeaway .kt-label {
-    font-size: 13px;
-    font-weight: 700;
-    color: #92400e;
-    margin-bottom: 4px;
-  }
-  @media (prefers-color-scheme: dark) {
-    .key-takeaway .kt-label { color: #fbbf24; }
-  }
-  .key-takeaway .kt-text {
-    font-size: 17px;
-    font-weight: 800;
-    color: #78350f;
-  }
-  @media (prefers-color-scheme: dark) {
-    .key-takeaway .kt-text { color: #fef3c7; }
-  }
+  .kt .kl { font-size: 12px; font-weight: 700; color: #92400e; }
+  @media (prefers-color-scheme: dark) { .kt .kl { color: #fbbf24; } }
+  .kt .kx { font-size: 15px; font-weight: 800; color: #78350f; margin-top: 2px; }
+  @media (prefers-color-scheme: dark) { .kt .kx { color: #fef3c7; } }
 
-  .source {
-    text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 20px;
-  }
+  .src { text-align: center; font-size: 11px; color: var(--muted); margin-top: 12px; }
 </style>
 <main>
-  <div class="title-block">
+  <div class="title">
     <h1>🚗 智能驾驶分级速查</h1>
-    <div class="sub">依据 GB/T 40429-2021 中国国家标准 | L1 ~ L3</div>
+    <div class="sub">GB/T 40429-2021 中国国标 | L1 ~ L3</div>
   </div>
 
-  <div class="rule-box">
-    <div class="rule-title">🔑 一句话记住核心区别</div>
-    <div class="rule-row">
-      <span class="rule-item rule-l2">⚠️ L2 及以下：人开车，出事人负责</span>
-      <span class="rule-item rule-l3">✅ L3 限定场景：车开车，出事车企负责</span>
-    </div>
+  <div class="rule">
+    <span class="r2">⚠️ L2 及以下：人开车，出事人负责</span>
+    <span class="r3">✅ L3 限定场景：车开车，出事车企负责</span>
   </div>
 
   <div class="cards">
     <div class="card">
-      <div class="card-header l1-h">L1 辅助驾驶</div>
-      <div class="card-body">
-        <div class="row"><span class="lbl">谁开车</span><span class="val"><span class="badge badge-danger">驾驶员</span></span></div>
-        <div class="row"><span class="lbl">能否脱手</span><span class="val">❌ 绝对不能</span></div>
-        <div class="row"><span class="lbl">事故责任</span><span class="val"><span class="badge badge-danger">驾驶员全责</span></span></div>
-        <div class="row"><span class="lbl">核心能力</span><span class="val">车速控制 <b>或</b> 方向控制<br/>二选一</span></div>
-        <div class="row"><span class="lbl">常见功能</span><span class="val">定速巡航、ACC<br/>车道偏离预警</span></div>
+      <div class="card-h h1">L1 辅助驾驶</div>
+      <div class="card-b">
+        <div class="r"><span class="k">谁开车</span><span class="v"><span class="badge b-r">驾驶员</span></span></div>
+        <div class="r"><span class="k">脱手</span><span class="v">❌ 绝对不能</span></div>
+        <div class="r"><span class="k">责任</span><span class="v"><span class="badge b-r">驾驶员全责</span></span></div>
+        <div class="r"><span class="k">能力</span><span class="v">车速<b>或</b>方向 二选一</span></div>
+        <div class="r"><span class="k">功能</span><span class="v">定速巡航、ACC</span></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-header l2-h">L2 组合驾驶辅助</div>
-      <div class="card-body">
-        <div class="row"><span class="lbl">谁开车</span><span class="val"><span class="badge badge-danger">驾驶员</span></span></div>
-        <div class="row"><span class="lbl">能否脱手</span><span class="val">️ 短暂脱手即报警<br/>必须时刻监控</span></div>
-        <div class="row"><span class="lbl">事故责任</span><span class="val"><span class="badge badge-danger">驾驶员全责</span></span></div>
-        <div class="row"><span class="lbl">核心能力</span><span class="val">横向 + 纵向<br/>同时控制</span></div>
-        <div class="row"><span class="lbl">常见功能</span><span class="val">ACC 全速域跟车 +<br/>车道居中 LCC、NCA</span></div>
+      <div class="card-h h2">L2 组合辅助</div>
+      <div class="card-b">
+        <div class="r"><span class="k">谁开车</span><span class="v"><span class="badge b-r">驾驶员</span></span></div>
+        <div class="r"><span class="k">脱手</span><span class="v">⚠️ 短暂即报警</span></div>
+        <div class="r"><span class="k">责任</span><span class="v"><span class="badge b-r">驾驶员全责</span></span></div>
+        <div class="r"><span class="k">能力</span><span class="v">横向+纵向双控制</span></div>
+        <div class="r"><span class="k">功能</span><span class="v">ACC+LCC、NCA</span></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-header l3-h">L3 有条件自动驾驶</div>
-      <div class="card-body">
-        <div class="row"><span class="lbl">谁开车</span><span class="val"><span class="badge badge-safe">限定场景车辆</span></span></div>
-        <div class="row"><span class="lbl">能否脱手</span><span class="val">✅ 可长时间脱手<br/>系统提醒才接管</span></div>
-        <div class="row"><span class="lbl">事故责任</span><span class="val"><span class="badge badge-safe">场景内车企担责</span></span></div>
-        <div class="row"><span class="lbl">核心能力</span><span class="val">系统全权接管<br/>感知 + 决策 + 执行</span></div>
-        <div class="row"><span class="lbl">使用限制</span><span class="val">仅限高速 / 封闭<br/>快速路，需资质</span></div>
+      <div class="card-h h3">L3 有条件自动</div>
+      <div class="card-b">
+        <div class="r"><span class="k">谁开车</span><span class="v"><span class="badge b-g">限定场景车辆</span></span></div>
+        <div class="r"><span class="k">脱手</span><span class="v">✅ 可长时间脱手</span></div>
+        <div class="r"><span class="k">责任</span><span class="v"><span class="badge b-g">车企担责</span></span></div>
+        <div class="r"><span class="k">能力</span><span class="v">系统全权接管</span></div>
+        <div class="r"><span class="k">限制</span><span class="v">高速/快速路+资质</span></div>
       </div>
     </div>
   </div>
 
-  <table class="summary-table">
-    <thead><tr><th>维度</th><th>L1 辅助驾驶</th><th>L2 组合辅助</th><th>L3 有条件自动驾驶</th></tr></thead>
+  <table class="tbl">
+    <thead><tr><th>维度</th><th>L1</th><th>L2</th><th>L3</th></tr></thead>
     <tbody>
-      <tr><td><b>谁开车</b></td><td>驾驶员</td><td>驾驶员</td><td>限定场景下车辆</td></tr>
-      <tr><td><b>能否脱手</b></td><td>❌ 绝对不能</td><td>⚠️ 短暂即报警</td><td>✅ 可长时间脱手</td></tr>
-      <tr><td><b>事故责任</b></td><td>驾驶员全责</td><td>驾驶员全责</td><td>场景内车企担责</td></tr>
-      <tr><td><b>核心能力</b></td><td>车速 / 方向二选一</td><td>横向+纵向双控制</td><td>系统全权接管</td></tr>
-      <tr><td><b>代表场景</b></td><td>定速巡航</td><td>高速 NCA / 城区 NCA</td><td>高速 / 快速路自动驾驶</td></tr>
+      <tr><td><b>谁开车</b></td><td>驾驶员</td><td>驾驶员</td><td>限定场景车辆</td></tr>
+      <tr><td><b>脱手</b></td><td>❌ 不能</td><td>⚠️ 报警</td><td>✅ 可脱手</td></tr>
+      <tr><td><b>责任</b></td><td>司机</td><td>司机</td><td>车企</td></tr>
+      <tr><td><b>场景</b></td><td>定速巡航</td><td>高速/城区NCA</td><td>高速自动驾驶</td></tr>
     </tbody>
   </table>
 
-  <div class="l3-warning">
-    <div class="l3-warning-header">
+  <div class="warn">
+    <div class="warn-h">
       <span class="icon">🚨</span>
-      <div>
-        <div class="title">L3 三大误区 · 务必注意</div>
-        <div class="sub">这是最容易搞混的地方，请仔细阅读</div>
-      </div>
+      <div><div class="t">L3 三大误区 · 务必注意</div><div class="s">最容易搞混的地方</div></div>
     </div>
-    <div class="l3-warning-body">
-      <div class="l3-warn-item">
-        <div class="item-title"><span class="item-num">1</span>带 NCA 自动领航 ≠ L3</div>
-        <p>小鹏、特斯拉、理想、比亚迪等所有品牌的城区 / 高速 NCA，目前都是 <span class="highlight">L2 级</span>，只是辅助驾驶。</p>
+    <div class="warn-b">
+      <div class="wi">
+        <div class="wt"><span class="n">1</span>NCA 自动领航 ≠ L3</div>
+        <p>小鹏、特斯拉、理想、比亚迪等城区/高速 NCA 都是 <span class="hi">L2 级</span>，只是辅助驾驶。</p>
         <p>⚠️ 手不能长时间离开方向盘，<b>出事司机负责</b>。</p>
-        <p>只有拿到 <span class="highlight">国家 L3 准入资质</span>、搭载冗余硬件的车型，才能合法 L3 脱手行驶。</p>
+        <p>只有拿到 <span class="hi">国家 L3 准入资质</span> + 冗余硬件的车型才能合法脱手。</p>
       </div>
-      <div class="l3-warn-item">
-        <div class="item-title"><span class="item-num">2</span>L3 ≠ 全路段自动驾驶</div>
-        <p>❌ 不能在 <b>城市普通红绿灯道路、小区、乡间小路</b> 使用。</p>
-        <p>✅ 仅限 <span class="highlight">高速、城市封闭快速路</span>，路况复杂路段系统会自动退出 L3 降级为 L2，需要人接管。</p>
+      <div class="wi">
+        <div class="wt"><span class="n">2</span>L3 ≠ 全路段自动驾驶</div>
+        <p>❌ 不能在城市红绿灯道路、小区、乡间小路用。</p>
+        <p>✅ 仅限 <span class="hi">高速、城市封闭快速路</span>，复杂路段自动退出 L3。</p>
       </div>
-      <div class="l3-warn-item">
-        <div class="item-title"><span class="item-num">3</span>L3 核心门槛：资质 + 硬件冗余</div>
-        <p>需要 <span class="highlight">国家准入资质</span> + 传感器 / 计算平台 <span class="highlight">双冗余备份</span>。</p>
-        <p>目前仅 <b>尊界 S800</b> 等极少数车型拿到合规 L3 量产资质。</p>
+      <div class="wi">
+        <div class="wt"><span class="n">3</span>L3 核心门槛</div>
+        <p>需要 <span class="hi">国家准入资质</span> + 传感器/计算平台 <span class="hi">双冗余</span>。</p>
+        <p>目前仅 <b>尊界 S800</b> 等极少数车型拿到合规 L3。</p>
       </div>
-      <div class="key-takeaway">
-        <div class="kt-label">💡 一句话总结</div>
-        <div class="kt-text">市面上 99% 的「智驾」「领航」都是 L2，手不能离方向盘，出事自己负责</div>
+      <div class="kt">
+        <div class="kl">💡 一句话总结</div>
+        <div class="kx">市面上 99% 的「智驾」「领航」都是 L2，手不能离方向盘，出事自己负责</div>
       </div>
     </div>
   </div>
 
-  <div class="source">数据来源：GB/T 40429-2021《汽车驾驶自动化分级》中国国家标准</div>
+  <div class="src">数据来源：GB/T 40429-2021《汽车驾驶自动化分级》</div>
 </main>
